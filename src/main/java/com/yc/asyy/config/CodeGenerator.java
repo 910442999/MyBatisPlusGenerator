@@ -1,5 +1,6 @@
 package com.yc.asyy.config;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -62,6 +63,10 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
         //        gc.setAuthor("yc");
+        gc.setIdType(IdType.AUTO);//设置主键生成策略
+        gc.setBaseResultMap(true);
+        gc.setBaseColumnList(true);
+        gc.setEnableCache(true);
         gc.setOpen(false);
         gc.setServiceName("%sService");//生成的service接口名字首字母是否为I，这样设置就没有I
 
@@ -145,13 +150,13 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 公共父类
-        strategy.setSuperEntityClass(basePackage + ".entity.MyBaseEntity");//"你自己的父类实体,没有就不用设置!"
-        strategy.setSuperControllerClass(basePackage + ".controller.MyBaseController");//"你自己的父类控制器,没有就不用设置!"
-        strategy.setSuperServiceClass(basePackage + ".service.MyBaseService");
-        strategy.setSuperMapperClass(basePackage + ".mapper.MyBaseMapper");
-        strategy.setSuperServiceImplClass(basePackage + ".service.impl.MyBaseServiceImpl");
-        //        // 写于父类中的公共字段
-//        strategy.setSuperEntityColumns("id");
+        strategy.setSuperEntityClass(basePackage + ".entity.BaseEntity");//"你自己的父类实体,没有就不用设置!"
+        strategy.setSuperControllerClass(basePackage + ".controller.BaseController");//"你自己的父类控制器,没有就不用设置!"
+        strategy.setSuperServiceClass(basePackage + ".service.BaseService");
+        strategy.setSuperMapperClass(basePackage + ".mapper.BaseMapper");
+        strategy.setSuperServiceImplClass(basePackage + ".service.impl.BaseServiceImpl");
+        // 写于父类中的公共字段
+        strategy.setSuperEntityColumns("id", "createTime", "updateTime");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         //        strategy.setTablePrefix(pc.getModuleName() + "_");
